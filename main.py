@@ -30,15 +30,15 @@ class Maze:
 
 class Finish:
     def __init__(self):
-        self.x = 250
-        self.y = 50
+        self.x = None
+        self.y = None
 
 
 class Player:
     def __init__(self, block_size):
         self.block_size = block_size
-        self.x = 50
-        self.y = 300
+        self.x = None
+        self.y = None
 
     def move_right(self):
         self.x += self.block_size
@@ -85,6 +85,19 @@ class App:
 
         self.finish_img = pygame.Surface([50, 50])
         self.finish_img.fill((255, 0, 0))
+
+        self.get_starting_points()
+
+    def get_starting_points(self):
+
+        for y, i in enumerate(self.maze.maze):
+            for x, j in enumerate(i):
+                if j == 8:
+                    self.player.x = (x * 50)
+                    self.player.y = (y * 50)
+                elif j == 9:
+                    self.finish.x = (x * 50)
+                    self.finish.y = (y * 50)
 
     def get_position(self, x, y):
         j = int((self.player.x + x) / self.block_size)
