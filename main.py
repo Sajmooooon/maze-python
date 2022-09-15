@@ -28,6 +28,12 @@ class Maze:
             border_x = 0
 
 
+class Finish:
+    def __init__(self):
+        self.x = 250
+        self.y = 50
+
+
 class Player:
     def __init__(self, block_size):
         self.block_size = block_size
@@ -55,11 +61,16 @@ class App:
         self.speed = 50
         self.block_size = 50
         self.clock = pygame.time.Clock()
+
         self.player = Player(self.block_size)
         self.player_img = None
         self.allow_movement = True
+
         self.maze = Maze()
         self.maze_img = None
+
+        self.finish = Finish()
+        self.finish_img = None
 
     def on_init(self):
         pygame.init()
@@ -72,8 +83,8 @@ class App:
         self.maze_img = pygame.Surface([50, 50])
         self.maze_img.fill((0, 0, 0))
 
-    def draw_player(self):
-        self.screen.blit(self.player_img, (self.player.x, self.player.y))
+        self.finish_img = pygame.Surface([50, 50])
+        self.finish_img.fill((255, 0, 0))
 
     def get_position(self, x, y):
         j = int((self.player.x + x) / self.block_size)
@@ -91,7 +102,7 @@ class App:
         self.on_init()
         while self.run:
             self.screen.fill((255, 255, 255))
-
+            self.screen.blit(self.finish_img, (self.finish.x, self.finish.y))
             self.maze.draw_maze(self.screen, self.block_size, self.maze_img)
 
             for event in pygame.event.get():
@@ -114,7 +125,8 @@ class App:
                 if event.type == pygame.KEYUP:
                     self.allow_movement = True
 
-            self.draw_player()
+            self.screen.blit(self.player_img, (self.player.x, self.player.y))
+            # self.draw_player()
             pygame.display.update()
             self.clock.tick(self.speed)
 
