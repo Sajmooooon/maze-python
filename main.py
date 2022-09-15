@@ -1,5 +1,33 @@
 import pygame
 
+
+class Maze:
+    def __init__(self):
+        self.maze = [
+            [1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1, 9, 0, 1],
+            [1, 0, 1, 0, 1, 1, 0, 1],
+            [1, 0, 1, 2, 0, 0, 2, 1],
+            [1, 0, 1, 0, 1, 1, 0, 1],
+            [1, 0, 1, 0, 1, 1, 0, 1],
+            [1, 8, 1, 0, 0, 1, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1]
+        ]
+
+    def draw_maze(self, screen, block_size, maze_img):
+
+        border_x = 0
+        border_y = 0
+        for i in self.maze:
+            for j in i:
+                if j == 1:
+                    screen.blit(maze_img, (
+                    border_x * block_size, border_y * block_size))
+                border_x += 1
+            border_y += 1
+            border_x = 0
+
+
 class Player:
     def __init__(self, block_size):
         self.block_size = block_size
@@ -18,6 +46,7 @@ class Player:
     def move_up(self):
         self.y -= self.block_size
 
+
 class App:
 
     def __init__(self):
@@ -29,6 +58,8 @@ class App:
         self.player = Player(self.block_size)
         self.player_img = None
         self.allow_movement = True
+        self.maze = Maze()
+        self.maze_img = None
 
     def on_init(self):
         pygame.init()
@@ -38,6 +69,9 @@ class App:
         self.player_img = pygame.Surface([50, 50])
         self.player_img.fill((0, 0, 255))
 
+        self.maze_img = pygame.Surface([50, 50])
+        self.maze_img.fill((0, 0, 0))
+
     def draw_player(self):
         self.screen.blit(self.player_img, (self.player.x, self.player.y))
 
@@ -45,6 +79,8 @@ class App:
         self.on_init()
         while self.run:
             self.screen.fill((255, 255, 255))
+
+            self.maze.draw_maze(self.screen, self.block_size, self.maze_img)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
