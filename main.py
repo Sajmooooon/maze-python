@@ -98,6 +98,11 @@ class App:
         else:
             return True
 
+    def check_game_over(self):
+        if self.finish.x == self.player.x and self.finish.y == self.player.y:
+            return True
+        return False
+
     def start_game(self):
         self.on_init()
         while self.run:
@@ -126,8 +131,9 @@ class App:
                     self.allow_movement = True
 
             self.screen.blit(self.player_img, (self.player.x, self.player.y))
-            # self.draw_player()
             pygame.display.update()
+            if self.check_game_over():
+                self.run = False
             self.clock.tick(self.speed)
 
 
