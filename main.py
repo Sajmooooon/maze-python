@@ -6,6 +6,18 @@ class Player:
         self.x = 50
         self.y = 300
 
+    def move_right(self):
+        self.x += self.block_size
+
+    def move_left(self):
+        self.x -= self.block_size
+
+    def move_down(self):
+        self.y += self.block_size
+
+    def move_up(self):
+        self.y -= self.block_size
+
 class App:
 
     def __init__(self):
@@ -16,6 +28,7 @@ class App:
         self.clock = pygame.time.Clock()
         self.player = Player(self.block_size)
         self.player_img = None
+        self.allow_movement = True
 
     def on_init(self):
         pygame.init()
@@ -36,6 +49,22 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.run = False
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT and self.allow_movement:
+                        self.allow_movement = False
+                        self.player.move_left()
+                    elif event.key == pygame.K_RIGHT and self.allow_movement:
+                        self.allow_movement = False
+                        self.player.move_right()
+                    elif event.key == pygame.K_UP and self.allow_movement:
+                        self.allow_movement = False
+                        self.player.move_up()
+                    elif event.key == pygame.K_DOWN and self.allow_movement:
+                        self.allow_movement = False
+                        self.player.move_down()
+                if event.type == pygame.KEYUP:
+                    self.allow_movement = True
 
             self.draw_player()
             pygame.display.update()
