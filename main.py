@@ -75,6 +75,18 @@ class App:
     def draw_player(self):
         self.screen.blit(self.player_img, (self.player.x, self.player.y))
 
+    def get_position(self, x, y):
+        j = int((self.player.x + x) / self.block_size)
+        i = int((self.player.y + y) / self.block_size)
+        return i, j
+
+    def check_border(self, x, y,):
+        i, j = self.get_position(x, y)
+        if self.maze.maze[i][j] == 1:
+            return False
+        else:
+            return True
+
     def start_game(self):
         self.on_init()
         while self.run:
@@ -87,16 +99,16 @@ class App:
                     self.run = False
 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT and self.allow_movement:
+                    if event.key == pygame.K_LEFT and self.allow_movement and self.check_border(-self.block_size, 0):
                         self.allow_movement = False
                         self.player.move_left()
-                    elif event.key == pygame.K_RIGHT and self.allow_movement:
+                    elif event.key == pygame.K_RIGHT and self.allow_movement and self.check_border(self.block_size, 0):
                         self.allow_movement = False
                         self.player.move_right()
-                    elif event.key == pygame.K_UP and self.allow_movement:
+                    elif event.key == pygame.K_UP and self.allow_movement and self.check_border(0, -self.block_size):
                         self.allow_movement = False
                         self.player.move_up()
-                    elif event.key == pygame.K_DOWN and self.allow_movement:
+                    elif event.key == pygame.K_DOWN and self.allow_movement and self.check_border(0, self.block_size):
                         self.allow_movement = False
                         self.player.move_down()
                 if event.type == pygame.KEYUP:
