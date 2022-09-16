@@ -93,19 +93,19 @@ class App:
         for y, i in enumerate(self.maze.maze):
             for x, j in enumerate(i):
                 if j == 8:
-                    self.player.x = (x * 50)
-                    self.player.y = (y * 50)
+                    self.player.x = (x * self.block_size)
+                    self.player.y = (y * self.block_size)
                 elif j == 9:
-                    self.finish.x = (x * 50)
-                    self.finish.y = (y * 50)
+                    self.finish.x = (x * self.block_size)
+                    self.finish.y = (y * self.block_size)
 
     def get_position(self, x, y):
-        j = int((self.player.x + x) / self.block_size)
-        i = int((self.player.y + y) / self.block_size)
+        j = int(x / self.block_size)
+        i = int(y / self.block_size)
         return i, j
 
     def check_border(self, x, y,):
-        i, j = self.get_position(x, y)
+        i, j = self.get_position(self.player.x + x, self.player.y + y)
         if self.maze.maze[i][j] == 1:
             return False
         else:
